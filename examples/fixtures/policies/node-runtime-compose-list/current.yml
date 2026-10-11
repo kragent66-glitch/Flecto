@@ -1,0 +1,13 @@
+services:
+  api:
+    environment:
+      - NODE_ENV=production
+      - NODE_OPTIONS=--inspect=0.0.0.0:9229
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+      - NODE_DEBUG=http
+  worker:
+    environment:
+      NODE_ENV: production
+      NODE_OPTIONS: --inspect=0.0.0.0:9229
+      NODE_TLS_REJECT_UNAUTHORIZED: "0"
+      NODE_DEBUG: http

@@ -14,30 +14,60 @@
       "id": "node-runtime-tls-verification-disabled",
       "severity": "error",
       "when": ["added", "changed"],
-      "match": {
-        "path": "(^|\\.)NODE_TLS_REJECT_UNAUTHORIZED$"
-      },
-      "afterIn": [0, "0"],
+      "anyOf": [
+        {
+          "match": {
+            "path": "(^|\\.)NODE_TLS_REJECT_UNAUTHORIZED$"
+          },
+          "afterIn": [0, "0"]
+        },
+        {
+          "match": {
+            "path": "\\[\"NODE_TLS_REJECT_UNAUTHORIZED\"\\]$"
+          },
+          "afterMatches": "^NODE_TLS_REJECT_UNAUTHORIZED=0$"
+        }
+      ],
       "message": "NODE_TLS_REJECT_UNAUTHORIZED disables TLS certificate verification. Remove it and fix the certificate chain."
     },
     {
       "id": "node-runtime-debug-enabled",
       "severity": "warn",
       "when": ["added", "changed"],
-      "match": {
-        "path": "(^|\\.)NODE_DEBUG$"
-      },
-      "afterMatches": ".+",
+      "anyOf": [
+        {
+          "match": {
+            "path": "(^|\\.)NODE_DEBUG$"
+          },
+          "afterMatches": ".+"
+        },
+        {
+          "match": {
+            "path": "\\[\"NODE_DEBUG\"\\]$"
+          },
+          "afterMatches": "^NODE_DEBUG=.+"
+        }
+      ],
       "message": "NODE_DEBUG is enabled. Confirm verbose runtime debugging is appropriate for this environment."
     },
     {
       "id": "node-runtime-inspector-enabled",
       "severity": "warn",
       "when": ["added", "changed"],
-      "match": {
-        "path": "(^|\\.)NODE_OPTIONS$"
-      },
-      "afterMatches": "(^|\\s)--inspect(?:-brk)?(?:=|\\s|$)",
+      "anyOf": [
+        {
+          "match": {
+            "path": "(^|\\.)NODE_OPTIONS$"
+          },
+          "afterMatches": "(^|\\s)--inspect(?:-brk)?(?:=|\\s|$)"
+        },
+        {
+          "match": {
+            "path": "\\[\"NODE_OPTIONS\"\\]$"
+          },
+          "afterMatches": "^NODE_OPTIONS=.*--inspect(?:-brk)?(?:=|\\s|$)"
+        }
+      ],
       "message": "Node.js inspector is enabled through NODE_OPTIONS. Avoid exposing debug ports outside trusted development environments."
     }
   ]

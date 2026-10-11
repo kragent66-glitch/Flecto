@@ -380,6 +380,23 @@ describe('policy engine', () => {
     assert.ok(findings.every((finding) => finding.pack === 'node-runtime'));
   });
 
+  test('list-form environment triggers same node-runtime rules as map-form', async () => {
+    // The list form is emitted by the differ for Compose files:
+    // - path = services.api.environment["NODE_OPTIONS"]
+    // - after = NODE_OPTIONS=--inspect=0.0.0.0:9229 (full key=value string)
+    const findings = await evaluatePolicies([
+      { type: 'added', path: 'services.api.environment["NODE_TLS_REJECT_UNAUTHORIZED"]', after: 'NODE_TLS_REJECT_UNAUTHORIZED=0' },
+      { type: 'added', path: 'services.api.environment["NODE_DEBUG"]', after: 'NODE_DEBUG=http' },
+      { type: 'added', path: 'services.api.environment["NODE_OPTIONS"]', after: 'NODE_OPTIONS=--inspect=0.0.0.0:9229' },
+    ], { policies: ['node-runtime'] });
+    assert.deepEqual(findings.map((finding) => finding.id), [
+      'node-runtime-tls-verification-disabled',
+      'node-runtime-debug-enabled',
+      'node-runtime-inspector-enabled',
+    ]);
+    assert.ok(findings.every((finding) => finding.pack === 'node-runtime'));
+  });
+
   test('matches beforeEquals and afterIn value predicates', async () => {
     const findings = await evaluateCustomPack([{
       id: 'value-transition',

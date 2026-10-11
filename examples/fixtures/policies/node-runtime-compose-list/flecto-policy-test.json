@@ -1,0 +1,13 @@
+{
+  "baseline": "baseline.json",
+  "current": "current.yml",
+  "policies": ["node-runtime"],
+  "expected": [
+    { "id": "node-runtime-tls-verification-disabled", "severity": "error", "path": "services.api.environment[\"NODE_TLS_REJECT_UNAUTHORIZED\"]" },
+    { "id": "node-runtime-debug-enabled", "severity": "warn", "path": "services.api.environment[\"NODE_DEBUG\"]" },
+    { "id": "node-runtime-inspector-enabled", "severity": "warn", "path": "services.api.environment[\"NODE_OPTIONS\"]" },
+    { "id": "node-runtime-tls-verification-disabled", "severity": "error", "path": "services.worker.environment.NODE_TLS_REJECT_UNAUTHORIZED" },
+    { "id": "node-runtime-debug-enabled", "severity": "warn", "path": "services.worker.environment.NODE_DEBUG" },
+    { "id": "node-runtime-inspector-enabled", "severity": "warn", "path": "services.worker.environment.NODE_OPTIONS" }
+  ]
+}
